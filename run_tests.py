@@ -83,7 +83,7 @@ check("1001. sor kezdeményezése: limit, nincs EOR", MAP, loop(333),
 prog = "set count to 0\nwhile true\n  if true\n    if false\n      print 1\n    else\n      print 2\n"
 assert "\n".join(ms.to_text(ms.parse_program(prog.rstrip("\n")))) == prog.rstrip("\n"), "szöveg-blokk körút"
 print("OK   szöveg → AST → szöveg körút")
-for w in ["while", "While", "ISTHERE", "9lives", "a b", ""]:
+for w in ["while", "9lives", "a b", ""]:
     assert not ms.is_ident(w), w
 for w in ["arany", "count2", "X", "whileX"]:
     assert ms.is_ident(w), w

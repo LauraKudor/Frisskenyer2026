@@ -1,0 +1,1001 @@
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+1
+2 print 1
+INSTRUCTION_COUNT_LIMIT_EXCEEDED

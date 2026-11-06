@@ -594,8 +594,7 @@ $("#bLog").onclick = async () => { const r = await api("/api/log"); $("#log").te
 $("#bExit").onclick = async () => {
   if (!confirm("Kilépsz az alkalmazásból?")) return;
   try { await api("/api/exit", {}); } catch (e) {}
-  document.body.innerHTML = '<div style="padding:40px;font:18px system-ui">Az alkalmazás leállt. Ezt a böngészőlapot bezárhatod.</div>';
-  window.close();
+  document.body.innerHTML = '<div style="padding:40px;font:18px system-ui">Az alkalmazás leállt. Ezt az ablakot bezárhatod.</div>';
 };
 
 /* ------------------------------------------------------------ indulás */

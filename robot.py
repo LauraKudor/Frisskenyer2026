@@ -9,7 +9,6 @@ import json
 import os
 import sys
 import threading
-import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import minescript as ms
@@ -66,7 +65,7 @@ class App:
             return {"log": ""}
 
 
-def make_handler(app):
+def make_handler(app, window=None):
     class H(BaseHTTPRequestHandler):
         def log_message(self, *a):
             pass
@@ -100,6 +99,8 @@ def make_handler(app):
             elif self.path == "/api/logsync":
                 self._send(200, app.logsync(int(data.get("n", 0))))
             elif self.path == "/api/exit":
+                if window is not None:
+                    window.destroy()
                 self._send(200, {"ok": True})
                 threading.Thread(target=app.server.shutdown, daemon=True).start()
             else:
@@ -109,17 +110,26 @@ def make_handler(app):
 
 
 def gui(inp, out):
+    import webview
     app = App(inp, out)
     srv = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(app))
     app.server = srv
-    url = "http://127.0.0.1:%d/" % srv.server_address[1]
+    port = srv.server_address[1]
+    url = "http://127.0.0.1:%d/" % port
     print("MineScript IDE fut: " + url)
-    print("(Ha a böngésző nem nyílt meg magától, nyisd meg ezt a címet. Kilépés: Kilépés gomb vagy Ctrl+C.)")
-    threading.Timer(0.4, lambda: webbrowser.open(url)).start()
-    try:
-        srv.serve_forever()
-    except KeyboardInterrupt:
-        pass
+
+    def run_server():
+        try:
+            srv.serve_forever()
+        except Exception:
+            pass
+
+    threading.Thread(target=run_server, daemon=True).start()
+
+    window = webview.create_window("MineScript IDE", url, width=1200, height=800)
+    webview.start()
+
+    srv.shutdown()
     srv.server_close()
 
 

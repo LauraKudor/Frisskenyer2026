@@ -5,7 +5,7 @@ Csak a Python standard könyvtárát használja.
 import re
 
 KEYWORDS = {
-    "and", "by", "else", "false", "forward", "here", "if", "isThere",
+    "and", "by", "else", "false", "forward", "here", "if", "isthere",
     "mine", "not", "or", "print", "set", "step", "to", "true", "turn", "while",
 }
 LIMIT = 1000

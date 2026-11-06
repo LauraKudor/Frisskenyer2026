@@ -1,0 +1,4 @@
+1 3
+>.@
+print q
+step forward q
