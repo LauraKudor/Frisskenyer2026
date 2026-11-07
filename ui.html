@@ -140,7 +140,7 @@ table.vars th{color:var(--muted);font:600 11.5px system-ui;text-transform:upperc
   <button id="bCont" title="Nyomkövetés folytatása automatikusan">⏩ Folytatás</button>
   <span class="sep"></span>
   <button id="bReset" title="Térkép és robot alaphelyzetbe">■ Alaphelyzet</button>
-  <label class="speed">Sebesség <input type="range" id="speed" min="1" max="10" value="5"></label>
+  <label class="speed">Sebesség <input type="range" id="speed" min="1" max="10" value="5" title="Maximumon a futás azonnali"></label>
   <span class="status" id="status">Készen áll</span>
 </div>
 <main>
@@ -558,7 +558,7 @@ function updateStatus() {
   else if (run.errLine) setMode("done", "Futási hiba miatt leállt", true);
   else setMode("done", "A futás véget ért (EOR)");
 }
-function stepOnce() {
+function stepOnce(fast) {
   if (!run || run.p >= run.entries.length) { stopTimer(); updateStatus(); return false; }
   const e = run.entries[run.p++];
   sim = fromState(e.st); varsView = e.vars;
@@ -571,13 +571,18 @@ function stepOnce() {
     if (run.end === "LIMIT") consoleLines.push(["e", "INSTRUCTION_COUNT_LIMIT_EXCEEDED – a program túllépte az 1000 soros utasításszám-limitet."]);
     else consoleLines.push(["i", e.err ? "— a futás hibával leállt (EOR) —" : "— a futás véget ért (EOR) —"]);
     syncLog(n);
-  } else syncLog(run.p);
-  renderAll(); updateStatus();
+  } else if (!fast) syncLog(run.p);
+  if (!fast) { renderAll(); updateStatus(); }
   return run.p < n;
 }
 function autoplay() {
   stopTimer();
   if (!run || run.p >= run.entries.length) return;
+  if (+$("#speed").value === 10) {      // maximális sebesség: azonnali végrehajtás, csak a végállapot rajzolódik ki
+    while (run.p < run.entries.length) stepOnce(true);
+    renderAll(); updateStatus();
+    return;
+  }
   timer = setInterval(() => { if (!stepOnce()) stopTimer(); $("#bPause").disabled = !timer; }, interval());
   $("#bPause").disabled = false;
   setMode("run", "Fut…");
