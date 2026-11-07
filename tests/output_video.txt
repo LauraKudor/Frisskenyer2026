@@ -1,1 +1,917 @@
-EOR
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 true
+3
+4 step forward 1
+5 mine here
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 true
+3
+4 step forward 1
+5 mine here
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 true
+3
+4 step forward 1
+5 mine here
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 true
+7
+8 turn by 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7
+9
+10 step forward 1
+1
+2 isThere 2 false
+3
+6 isThere 1 false
+7

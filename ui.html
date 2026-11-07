@@ -32,7 +32,7 @@ label.speed{display:flex;align-items:center;gap:6px;color:var(--muted);font-size
 main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(380px,1.25fr) minmax(300px,.9fr) minmax(360px,1fr);gap:10px;padding:10px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0;min-width:0}
 .panel>h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
-.panel>h2 small{text-transform:none;letter-spacing:0;font-weight:400}
+.panel>h2 small{text-transform:none;letter-spacing:0;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
 .body{padding:10px;overflow:auto;min-height:0;flex:1}
 .col{display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0}
 .col>.panel{flex:1 1 0}
@@ -59,25 +59,33 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(380px,1.25fr)
 .tools button:hover{background:#fff;border-color:var(--line)}
 .tools .del:hover{color:var(--err)}
 .inner{margin:0 8px 8px 16px;padding:4px;border-left:3px solid rgba(0,0,0,.12);background:rgba(255,255,255,.55);border-radius:6px}
-.fld{font:13px ui-monospace,Consolas,Menlo,monospace;border:1px solid #b7bfd0;border-radius:5px;padding:2px 6px;background:#fff;min-width:42px;color:#1d2330}
+.fld{font:13px ui-monospace,Consolas,Menlo,monospace;border:1px solid #b7bfd0;border-radius:5px;padding:2px 6px;background:#fff;min-width:70px;color:#1d2330;transition:min-width .15s}
+.fld:focus{outline:2px solid #9bbcf5;min-width:160px;z-index:10;position:relative}
 .fld:placeholder-shown{border-color:#e07a7a;background:#fff5f5}
 .fld:focus{outline:2px solid #9bbcf5}
 .fld.bad{animation:shake .3s;border-color:var(--err)}
 @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-.valblk{display:inline-flex;align-items:center;gap:5px;background:var(--val);border:1.5px solid var(--val-b);border-radius:6px;padding:1px 5px}
-.valblk select{font:13px ui-monospace,Consolas,monospace;border:1px solid var(--val-b);border-radius:4px;background:#fff;padding:1px 2px}
+.vb{display:inline-flex;align-items:center;gap:6px;background:var(--val);border:1.5px solid var(--val-b);border-radius:8px;padding:2px 6px}
+.vb .op{font:600 13px ui-monospace,Consolas,monospace;color:#5b4308}
+.vb .x{border:0;background:transparent;padding:0 4px;height:20px;line-height:16px;color:#a07a18;font-size:12px}
+.vb .x:hover{color:var(--err);background:#fff}
+.vslot{display:inline-flex;align-items:center;border:1.5px dashed var(--val-b);background:#fffaf0;color:#a07a18;border-radius:8px;padding:2px 10px;cursor:pointer;font-size:12.5px;user-select:none}
+.vslot:hover,.vslot.open{background:var(--val);color:#5b4308}
+.pill{border:1px solid #b7bfd0;border-radius:5px;background:#fff;padding:1px 6px;font:12px ui-monospace,Consolas,monospace;color:#555}
 .row.cur{background:#ffe48a;box-shadow:0 0 0 2px #e0a800 inset}
 .row.errline{background:#ffc9c9;box-shadow:0 0 0 2px var(--err) inset}
 .else-row{font-weight:600;margin:0 0 0 0;padding:3px 10px;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08);background:rgba(155,132,217,.12)}
 .hint{color:var(--muted);font-size:12.5px;margin:0 0 8px}
 
 /* ---- menü ---- */
-.menu{position:fixed;z-index:50;background:#fff;border:1px solid #9aa6c4;border-radius:8px;box-shadow:0 8px 24px rgba(20,30,60,.25);padding:6px;min-width:230px}
+.menu{position:fixed;z-index:50;max-height:calc(100vh - 16px);overflow:auto;background:#fff;border:1px solid #9aa6c4;border-radius:8px;box-shadow:0 8px 24px rgba(20,30,60,.25);padding:6px;min-width:230px}
 .menu h4{margin:4px 8px;font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.6px}
 .menu button{display:block;width:100%;text-align:left;border:0;border-radius:5px;margin:1px 0;padding:5px 10px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
 .menu button.cmd{background:var(--cmd)} .menu button.print{background:var(--print)}
 .menu button.ctl{background:var(--ctl)} .menu button.loop{background:var(--loop)}
 .menu button.dis{opacity:.4;cursor:not-allowed}
+.menu button.vitem{background:transparent;padding:3px 6px}
+.menu button.vitem:hover{background:#f3f6ff}
 
 /* ---- kód nézet ---- */
 .code{font:13px/1.6 ui-monospace,Consolas,Menlo,monospace;padding:6px 0}
@@ -229,6 +237,7 @@ const fromState = st => ({x:st.x,y:st.y,d:st.d,mined:st.m,grid:st.g.map(r=>r.spl
 
 /* ------------------------------------------------------------ modell → szöveg */
 function exprText(e) {
+  if (!e) return "";
   if (e.k === "val") return e.a;
   if (e.k === "bin") return `${e.a} ${e.op} ${e.b}`;
   if (e.k === "not") return "not " + e.a;
@@ -278,7 +287,7 @@ function newBlock(t) {
     case "turn": return {t, a: ""};
     case "mine": return {t};
     case "print": return {t, a: ""};
-    case "set": return {t, name: "", expr: {k: "val", a: ""}};
+    case "set": return {t, name: "", expr: null};
     case "if": return {t, a: "", body: []};
     case "ifelse": return {t, a: "", body: [], ebody: []};
     case "while": return {t, a: "", body: []};
@@ -286,7 +295,7 @@ function newBlock(t) {
 }
 const isCtl = t => t === "if" || t === "ifelse" || t === "while";
 
-function closeMenu() { document.querySelectorAll(".menu").forEach(m => m.remove()); document.querySelectorAll(".slot.open").forEach(s => s.classList.remove("open")); }
+function closeMenu() { document.querySelectorAll(".menu").forEach(m => m.remove()); document.querySelectorAll(".slot.open,.vslot.open").forEach(s => s.classList.remove("open")); }
 function openMenu(slotEl, list, idx, depth) {
   closeMenu(); slotEl.classList.add("open");
   const m = el("div", "menu", el("h4", "", "Új blokk beszúrása"));
@@ -325,7 +334,7 @@ function field(obj, key, kind, ph) {
   const inp = document.createElement("input");
   inp.className = "fld"; inp.type = "text"; inp.spellcheck = false; inp.autocomplete = "off";
   inp.value = obj[key]; inp.placeholder = ph;
-  const size = () => { inp.style.width = Math.max(5, inp.value.length + 2, ph.length + 1) + "ch"; };
+  const size = () => { inp.style.width = Math.max(8, inp.value.length + 4, ph.length + 2) + "ch"; };
   size(); inp.addEventListener("input", size);
   inp.addEventListener("keydown", e => { if (e.key === "Enter") inp.blur(); e.stopPropagation(); });
   inp.addEventListener("change", () => {
@@ -340,22 +349,50 @@ function field(obj, key, kind, ph) {
   });
   return inp;
 }
-const OPS = [["val","érték"],["+","+"],["-","−"],["*","*"],["=","="],["<>","<>"],["<","<"],["<=","<="],[">",">"],[">=",">="],["and","and"],["or","or"],["not","not"],["isThere","isThere"]];
+/* ---- érték-blokkok: a set blokk "to" utáni részébe illeszthetők, nem ágyazhatók egymásba ---- */
+const VALS = ["val", "+", "-", "*", "=", "<>", "<", "<=", ">", ">=", "and", "or", "not", "isThere"];
+function mkExpr(id) {
+  if (id === "val") return {k: "val", a: ""};
+  if (id === "not" || id === "isThere") return {k: id, a: ""};
+  return {k: "bin", op: id, a: "", b: ""};
+}
+function vbLayout(id, mk) {            // az érték-blokk alakja; mk(key) egy ⟨simpleval⟩ mezőt ad
+  const op = t => el("span", "op", t);
+  if (id === "val") return [mk("a")];
+  if (id === "not" || id === "isThere") return [op(id), mk("a")];
+  return [mk("a"), op(id), mk("b")];
+}
 function exprEditor(n) {
-  const e = n.expr, box = el("span", "valblk");
-  const cur = e.k === "bin" ? e.op : e.k;
-  const sel = document.createElement("select");
-  sel.title = "Érték-blokk típusa";
-  for (const [v, l] of OPS) { const o = document.createElement("option"); o.value = v; o.textContent = l; if (v === cur) o.selected = true; sel.append(o); }
-  sel.onchange = () => {
-    const a = e.a || "", b = e.b || "", v = sel.value;
-    n.expr = v === "val" ? {k:"val", a} : v === "not" ? {k:"not", a} : v === "isThere" ? {k:"isThere", a} : {k:"bin", op:v, a, b};
-    changed(true);
-  };
-  if (e.k === "bin") { box.append(field(e, "a", "simple", "érték"), sel, field(e, "b", "simple", "érték")); }
-  else if (e.k === "val") { box.append(field(e, "a", "simple", "érték"), sel); }
-  else { box.append(sel, field(e, "a", "simple", "érték")); }
+  if (!n.expr) {
+    const sl = el("span", "vslot", "＋ érték-blokk");
+    sl.title = "Érték-blokk beszúrása";
+    sl.onclick = ev => { ev.stopPropagation(); openValMenu(sl, n); };
+    return sl;
+  }
+  const e = n.expr, id = e.k === "bin" ? e.op : e.k;
+  const box = el("span", "vb");
+  vbLayout(id, key => field(e, key, "simple", "simpleval")).forEach(x => box.append(x));
+  const x = el("button", "x", "✕"); x.title = "Érték-blokk eltávolítása";
+  x.onclick = () => { n.expr = null; changed(true); };
+  box.append(x);
   return box;
+}
+function openValMenu(anchor, n) {
+  closeMenu(); anchor.classList.add("open");
+  const m = el("div", "menu", el("h4", "", "Érték-blokk beszúrása"));
+  for (const id of VALS) {
+    const b = el("button", "vitem"), vb = el("span", "vb");
+    vbLayout(id, () => el("span", "pill", "⟨simpleval⟩")).forEach(x => vb.append(x));
+    b.append(vb);
+    b.onclick = ev => { ev.stopPropagation(); closeMenu(); n.expr = mkExpr(id); changed(true); };
+    m.append(b);
+  }
+  document.body.append(m);
+  const r = anchor.getBoundingClientRect();
+  let top = r.bottom + 4, left = r.left;
+  if (top + m.offsetHeight > innerHeight - 8) top = Math.max(8, innerHeight - m.offsetHeight - 8);
+  if (left + m.offsetWidth > innerWidth - 8) left = Math.max(8, innerWidth - m.offsetWidth - 8);
+  m.style.top = top + "px"; m.style.left = left + "px";
 }
 
 function moveBlock(list, i, d) {
@@ -375,17 +412,17 @@ function blockEl(n, list, i, depth) {
   if (n.t === "step" || n.t === "turn" || n.t === "mine" || n.t === "print" || n.t === "set") {
     const cls = n.t === "print" ? "print" : "cmd";
     const row = el("div", "row");
-    if (n.t === "step") row.append(kw("step forward"), field(n, "a", "simple", "érték"));
-    if (n.t === "turn") row.append(kw("turn by"), field(n, "a", "simple", "érték"));
+    if (n.t === "step") row.append(kw("step forward"), field(n, "a", "simple", "simpleval"));
+    if (n.t === "turn") row.append(kw("turn by"), field(n, "a", "simple", "simpleval"));
     if (n.t === "mine") row.append(kw("mine here"));
-    if (n.t === "print") row.append(kw("print"), field(n, "a", "simple", "érték"));
+    if (n.t === "print") row.append(kw("print"), field(n, "a", "simple", "simpleval"));
     if (n.t === "set") row.append(kw("set"), field(n, "name", "ident", "változó"), kw("to"), exprEditor(n));
     row.append(tools(list, i));
     lineEls[n._l] = row;
     return el("div", "blk " + cls, row);
   }
   const cls = n.t === "while" ? "loop" : "ctl";
-  const row = el("div", "row", kw(n.t === "ifelse" ? "if" : n.t), field(n, "a", "simple", "érték"), tools(list, i));
+  const row = el("div", "row", kw(n.t === "ifelse" ? "if" : n.t), field(n, "a", "simple", "simpleval"), tools(list, i));
   lineEls[n._l] = row;
   const b = el("div", "blk " + cls, row);
   const inner = el("div", "inner"); renderList(n.body, inner, depth + 1); b.append(inner);
@@ -399,7 +436,7 @@ function renderBlocks() {
   genLines(model, 0, []);       // sorszámok
   lineEls = {};
   const ws = $("#ws"); const sc = ws.scrollTop; ws.innerHTML = "";
-  ws.append(el("p", "hint", "A program blokkokból áll. Kattints egy „＋” sávra, és válaszd ki a beszúrandó blokkot. A mezőkbe változónevet, számot (0–100) vagy true/false értéket írhatsz."));
+  ws.append(el("p", "hint", "A program blokkokból áll. Kattints egy „＋” sávra, és válaszd ki a beszúrandó blokkot. A set blokk „to” utáni részébe érték-blokk kerül (a sárga „＋ érték-blokk” mezőre kattintva választhatsz). A ⟨simpleval⟩ mezőkbe változónevet, számot (0–100) vagy true/false értéket írhatsz."));
   const wrap = el("div"); renderList(model, wrap, 0); ws.append(wrap); ws.scrollTop = sc;
 }
 function changed(structural) {
@@ -412,7 +449,7 @@ function changed(structural) {
 
 function findIncomplete(nodes) {
   for (const n of nodes) {
-    const bad = (n.a === "" ) || (n.t === "set" && (n.name === "" || n.expr.a === "" || (n.expr.k === "bin" && n.expr.b === "")));
+    const bad = (n.a === "" ) || (n.t === "set" && (n.name === "" || !n.expr || n.expr.a === "" || (n.expr.k === "bin" && n.expr.b === "")));
     if (n.t !== "mine" && bad) return n;
     if (n.body) { const r = findIncomplete(n.body); if (r) return r; }
     if (n.ebody) { const r = findIncomplete(n.ebody); if (r) return r; }

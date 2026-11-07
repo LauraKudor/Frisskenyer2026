@@ -125,8 +125,7 @@ def gui(inp, out):
             pass
 
     threading.Thread(target=run_server, daemon=True).start()
-
-    window = webview.create_window("MineScript IDE", url, width=1200, height=800)
+    window = webview.create_window("MineScript IDE", url, width=1500, height=800,x=10, y=10)
     webview.start()
 
     srv.shutdown()
