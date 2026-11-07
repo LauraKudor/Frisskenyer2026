@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MineScript IDE</title>
+<style>
+:root{
+  --bg:#f3f4f7; --panel:#fff; --line:#d5d9e2; --ink:#1d2330; --muted:#6a7386;
+  --cmd:#e3edfb; --cmd-b:#7ea6e0; --print:#e5f3e1; --print-b:#7fc171;
+  --ctl:#ece6fa; --ctl-b:#9b84d9; --loop:#dff3ee; --loop-b:#52b79c;
+  --val:#fdf0d3; --val-b:#e2a935; --err:#d93a3a; --acc:#2563eb;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:14px/1.35 system-ui,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-direction:column}
+header{background:#1f2a44;color:#fff;padding:8px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.3px}
+header .files{font-size:12px;color:#b9c3dd}
+header .files b{color:#fff}
+.toolbar{background:#fff;border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toolbar .sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 11px;cursor:pointer;color:var(--ink)}
+button:hover{background:#eef2fb}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
+button.primary:hover{background:#1d4fc4}
+button.danger{color:var(--err)}
+.status{margin-left:auto;font-weight:600;color:#33406a;background:#eaeefb;border-radius:6px;padding:4px 10px}
+.status.err{background:#fbe3e3;color:var(--err)}
+label.speed{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(380px,1.25fr) minmax(300px,.9fr) minmax(360px,1fr);gap:10px;padding:10px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0;min-width:0}
+.panel>h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.panel>h2 small{text-transform:none;letter-spacing:0;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.body{padding:10px;overflow:auto;min-height:0;flex:1}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0}
+.col>.panel{flex:1 1 0}
+.col>.panel.fixed{flex:0 0 auto}
+
+/* ---- blokkok ---- */
+.slot{height:8px;margin:1px 0;border-radius:4px;position:relative;cursor:pointer;transition:height .08s}
+.slot:hover,.slot.open{height:22px;background:repeating-linear-gradient(45deg,#dbe6ff,#dbe6ff 6px,#eaf0ff 6px,#eaf0ff 12px);outline:1px dashed #7ea6e0}
+.slot:hover::after,.slot.open::after{content:"＋ ide szúrhatsz be blokkot";position:absolute;left:8px;top:2px;font-size:12px;color:#2c52a8}
+.slot.last,.slot.empty{height:26px;border:1px dashed #b9c2d6;color:#7a859c;display:flex;align-items:center;padding-left:10px;font-size:12.5px;background:#fafbfe}
+.slot.last::after,.slot.empty::after{content:"＋ blokk beszúrása";position:static}
+.slot.last:hover,.slot.empty:hover,.slot.last.open,.slot.empty.open{background:#e7efff;border-color:#7ea6e0;color:#2c52a8}
+.slot.last:hover::after,.slot.empty:hover::after{content:"＋ blokk beszúrása"}
+.blk{border:1.5px solid;border-radius:8px;margin:0;position:relative}
+.blk.cmd{background:var(--cmd);border-color:var(--cmd-b)}
+.blk.print{background:var(--print);border-color:var(--print-b)}
+.blk.ctl{background:var(--ctl);border-color:var(--ctl-b)}
+.blk.loop{background:var(--loop);border-color:var(--loop-b)}
+.row{display:flex;align-items:center;gap:6px;padding:5px 8px;flex-wrap:wrap;border-radius:7px}
+.row .kw{font-weight:600}
+.row .tools{margin-left:auto;display:flex;gap:2px;opacity:.55}
+.blk:hover>.row .tools,.row:hover .tools{opacity:1}
+.tools button{padding:0 6px;height:22px;line-height:18px;border-color:transparent;background:transparent;font-size:13px}
+.tools button:hover{background:#fff;border-color:var(--line)}
+.tools .del:hover{color:var(--err)}
+.inner{margin:0 8px 8px 16px;padding:4px;border-left:3px solid rgba(0,0,0,.12);background:rgba(255,255,255,.55);border-radius:6px}
+.fld{font:13px ui-monospace,Consolas,Menlo,monospace;border:1px solid #b7bfd0;border-radius:5px;padding:2px 6px;background:#fff;min-width:70px;color:#1d2330;transition:min-width .15s}
+.fld:focus{outline:2px solid #9bbcf5;min-width:160px;z-index:10;position:relative}
+.fld:placeholder-shown{border-color:#e07a7a;background:#fff5f5}
+.fld:focus{outline:2px solid #9bbcf5}
+.fld.bad{animation:shake .3s;border-color:var(--err)}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.vb{display:inline-flex;align-items:center;gap:6px;background:var(--val);border:1.5px solid var(--val-b);border-radius:8px;padding:2px 6px}
+.vb .op{font:600 13px ui-monospace,Consolas,monospace;color:#5b4308}
+.vb .x{border:0;background:transparent;padding:0 4px;height:20px;line-height:16px;color:#a07a18;font-size:12px}
+.vb .x:hover{color:var(--err);background:#fff}
+.vslot{display:inline-flex;align-items:center;border:1.5px dashed var(--val-b);background:#fffaf0;color:#a07a18;border-radius:8px;padding:2px 10px;cursor:pointer;font-size:12.5px;user-select:none}
+.vslot:hover,.vslot.open{background:var(--val);color:#5b4308}
+.pill{border:1px solid #b7bfd0;border-radius:5px;background:#fff;padding:1px 6px;font:12px ui-monospace,Consolas,monospace;color:#555}
+.row.cur{background:#ffe48a;box-shadow:0 0 0 2px #e0a800 inset}
+.row.errline{background:#ffc9c9;box-shadow:0 0 0 2px var(--err) inset}
+.else-row{font-weight:600;margin:0 0 0 0;padding:3px 10px;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08);background:rgba(155,132,217,.12)}
+.hint{color:var(--muted);font-size:12.5px;margin:0 0 8px}
+
+/* ---- menü ---- */
+.menu{position:fixed;z-index:50;max-height:calc(100vh - 16px);overflow:auto;background:#fff;border:1px solid #9aa6c4;border-radius:8px;box-shadow:0 8px 24px rgba(20,30,60,.25);padding:6px;min-width:230px}
+.menu h4{margin:4px 8px;font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.6px}
+.menu button{display:block;width:100%;text-align:left;border:0;border-radius:5px;margin:1px 0;padding:5px 10px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.menu button.cmd{background:var(--cmd)} .menu button.print{background:var(--print)}
+.menu button.ctl{background:var(--ctl)} .menu button.loop{background:var(--loop)}
+.menu button.dis{opacity:.4;cursor:not-allowed}
+.menu button.vitem{background:transparent;padding:3px 6px}
+.menu button.vitem:hover{background:#f3f6ff}
+
+/* ---- kód nézet ---- */
+.code{font:13px/1.6 ui-monospace,Consolas,Menlo,monospace;padding:6px 0}
+.code .ln{display:flex;white-space:pre}
+.code .ln span.n{width:36px;text-align:right;padding-right:10px;color:#9aa3b8;user-select:none;flex:0 0 36px}
+.code .ln.cur{background:#ffe48a}
+.code .ln.errline{background:#ffc9c9}
+.log{font:13px/1.5 ui-monospace,Consolas,monospace;white-space:pre;margin:0;color:#222}
+
+/* ---- szimulátor ---- */
+.mapwrap{display:flex;justify-content:center;padding:4px 0 10px}
+.map{display:grid;gap:2px;background:#222;padding:4px;border-radius:8px}
+.cell{width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:19px;position:relative;user-select:none}
+.cell.fog{background:#3a3f4d}
+.cell.empty{background:#e9ddc0}
+.cell.wall{background:#7b5b3a;color:#4b3320}
+.cell.gold{background:#e9ddc0;color:#e0a800;text-shadow:0 0 3px #fff}
+.cell.target{outline:2.5px dashed #14a5c8;outline-offset:-3px}
+.robot{width:26px;height:26px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(0,0,0,.5)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted);justify-content:center;margin-bottom:8px}
+.legend i{display:inline-block;width:13px;height:13px;border-radius:3px;vertical-align:-2px;margin-right:3px;border:1px solid rgba(0,0,0,.2)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1;min-width:130px;background:#f6f8fc;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.stat small{display:block;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+.stat b{font-size:17px}
+.manual{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+table.vars{border-collapse:collapse;width:100%;font:13px ui-monospace,Consolas,monospace}
+table.vars td,table.vars th{border-bottom:1px solid #eceff5;padding:3px 8px;text-align:left}
+table.vars th{color:var(--muted);font:600 11.5px system-ui;text-transform:uppercase}
+.console{font:13px/1.5 ui-monospace,Consolas,monospace;white-space:pre-wrap;margin:0}
+.console .e{color:var(--err);font-weight:600}
+.console .i{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1f2a44;color:#fff;padding:10px 18px;border-radius:8px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.35);max-width:80vw}
+.toast.err{background:#b52a2a}
+.kbd{font:11px ui-monospace,monospace;background:#eef0f5;border:1px solid #cfd5e3;border-radius:4px;padding:0 4px}
+@media (max-width:1150px){main{grid-template-columns:1fr}.col>.panel{flex:0 0 auto}}
+</style>
+</head>
+<body>
+<header>
+  <h1>⛏ MineScript IDE – kincskereső robot</h1>
+  <span class="files">Bemenet: <b id="fIn">–</b> · Naplófájl: <b id="fLog">–</b></span>
+  <span style="margin-left:auto"></span>
+  <button id="bExit" class="danger" title="Az alkalmazás leállítása">Kilépés</button>
+</header>
+<div class="toolbar">
+  <button id="bRun" class="primary" title="Futtatás nyomkövetés nélkül, lassítva">▶ Futtatás</button>
+  <button id="bPause" title="Az automatikus futás szüneteltetése">⏸ Szünet</button>
+  <span class="sep"></span>
+  <button id="bDebug" title="Nyomkövetés indítása: a program az első soron megáll">🐞 Nyomkövetés</button>
+  <button id="bStep" title="Egy sor végrehajtása (Enter)">⤵ Következő lépés</button>
+  <button id="bCont" title="Nyomkövetés folytatása automatikusan">⏩ Folytatás</button>
+  <span class="sep"></span>
+  <button id="bReset" title="Térkép és robot alaphelyzetbe">■ Alaphelyzet</button>
+  <label class="speed">Sebesség <input type="range" id="speed" min="1" max="10" value="5" title="Maximumon a futás azonnali"></label>
+  <span class="status" id="status">Készen áll</span>
+</div>
+<main>
+  <section class="panel">
+    <h2>Blokkszerkesztő <small>– a kék „＋” sávokra kattintva szúrhatsz be blokkot</small></h2>
+    <div class="body" id="ws"></div>
+  </section>
+
+  <div class="col">
+    <section class="panel">
+      <h2>Szöveges forráskód <small>(a blokkokból készül, csak olvasható)</small></h2>
+      <div class="body"><div class="code" id="code"></div></div>
+    </section>
+    <section class="panel">
+      <h2>Naplófájl <small id="logName"></small>
+        <button id="bLog" style="margin-left:auto;padding:2px 8px" title="A lemezen lévő fájl újraolvasása">⟳ Megnyitás / frissítés</button></h2>
+      <div class="body"><pre class="log" id="log"></pre></div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="panel fixed">
+      <h2>Robot szimulátor</h2>
+      <div class="body" style="overflow:visible">
+        <div class="mapwrap"><div class="map" id="map"></div></div>
+        <div class="legend">
+          <span><i style="background:#3a3f4d"></i>felfedezetlen</span>
+          <span><i style="background:#e9ddc0"></i>üres kamra</span>
+          <span><i style="background:#7b5b3a"></i>fal</span>
+          <span><i style="background:#e9ddc0;color:#e0a800">●</i>aranyrög</span>
+          <span><i style="border:2px dashed #14a5c8;background:#fff"></i>szenzor célmezője</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><small>Szenzor (a robot előtt)</small><b id="sensor">–</b></div>
+          <div class="stat"><small>Kibányászott arany</small><b id="mined">0</b></div>
+        </div>
+        <div class="manual">
+          <button id="mTurn" title="turn by 1 (←)">↺ Fordulj balra</button>
+          <button id="mStep" title="step forward 1 (↑)">⬆ Lépj előre</button>
+          <button id="mMine" title="mine here (M)">⛏ Bányássz</button>
+          <span style="color:var(--muted);font-size:12px;align-self:center">kézi vezérlés: <span class="kbd">←</span> <span class="kbd">↑</span> <span class="kbd">M</span></span>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Változók</h2>
+      <div class="body"><div id="vars"></div></div>
+    </section>
+    <section class="panel">
+      <h2>Konzol</h2>
+      <div class="body"><pre class="console" id="console"></pre></div>
+    </section>
+  </div>
+</main>
+
+<script>
+"use strict";
+const KEYWORDS = ["and","by","else","false","forward","here","if","isthere","mine","not","or","print","set","step","to","true","turn","while"];
+const MAX_DEPTH = 3;
+const DIRS = [[1,0],[0,-1],[-1,0],[0,1]];
+const ARROWS = ["▶","▲","◀","▼"];
+const $ = s => document.querySelector(s);
+const el = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; kids.forEach(k => e.append(k)); return e; };
+
+let init = null, model = [], sim = null, run = null, timer = null;
+let consoleLines = [], varsView = [], lineEls = {}, lineDivs = {}, mode = "idle";
+let logQueue = Promise.resolve();
+
+/* ------------------------------------------------------------ segédek */
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? {} : {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+  return r.json();
+}
+function toast(msg, isErr) {
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const t = el("div", "toast" + (isErr ? " err" : ""), msg);
+  document.body.append(t); setTimeout(() => t.remove(), 3200);
+}
+const isKeyword = s => KEYWORDS.includes(s.toLowerCase());
+const isIdent = s => /^[A-Za-z][A-Za-z0-9]*$/.test(s) && !isKeyword(s);
+function validIdent(s) { return isIdent(s); }
+function validSimple(s) {
+  if (s === "true" || s === "false") return true;
+  if (/^[0-9]+$/.test(s)) return +s >= 0 && +s <= 100;
+  return isIdent(s);
+}
+function whyInvalid(kind, s) {
+  if (isKeyword(s)) return `„${s}” kulcsszó, nem használható változónévnek.`;
+  if (kind === "simple" && /^[0-9]+$/.test(s)) return "A számoknak 0 és 100 között kell lenniük.";
+  return `„${s}” nem érvényes: a név betűvel kezdődik, utána betű/szám jöhet; szám: 0–100; logikai: true/false.`;
+}
+const cloneState = s => ({x:s.x,y:s.y,d:s.d,mined:s.mined,grid:s.grid.map(r=>r.slice()),disc:s.disc.map(r=>r.slice())});
+const fromState = st => ({x:st.x,y:st.y,d:st.d,mined:st.m,grid:st.g.map(r=>r.split("")),disc:st.v.map(r=>[...r].map(c=>c==="1"))});
+
+/* ------------------------------------------------------------ modell → szöveg */
+function exprText(e) {
+  if (!e) return "";
+  if (e.k === "val") return e.a;
+  if (e.k === "bin") return `${e.a} ${e.op} ${e.b}`;
+  if (e.k === "not") return "not " + e.a;
+  return "isThere " + e.a;
+}
+function genLines(nodes, depth, out) {
+  const pad = "  ".repeat(depth);
+  for (const n of nodes) {
+    n._l = out.length + 1;
+    switch (n.t) {
+      case "step": out.push(pad + "step forward " + n.a); break;
+      case "turn": out.push(pad + "turn by " + n.a); break;
+      case "mine": out.push(pad + "mine here"); break;
+      case "print": out.push(pad + "print " + n.a); break;
+      case "set": out.push(pad + "set " + n.name + " to " + exprText(n.expr)); break;
+      case "if": case "while":
+        out.push(pad + n.t + " " + n.a); genLines(n.body, depth + 1, out); break;
+      case "ifelse":
+        out.push(pad + "if " + n.a); genLines(n.body, depth + 1, out);
+        n._el = out.length + 1; out.push(pad + "else"); genLines(n.ebody, depth + 1, out); break;
+    }
+  }
+  return out;
+}
+const textLines = () => genLines(model, 0, []);
+
+function refreshText() {
+  const lines = textLines();
+  const box = $("#code"); box.innerHTML = ""; lineDivs = {};
+  lines.forEach((t, i) => {
+    const d = el("div", "ln", el("span", "n", String(i + 1)), el("span", "", t));
+    box.append(d); lineDivs[i + 1] = d;
+  });
+  if (!lines.length) box.append(el("div", "hint", "  (üres program)"));
+  applyHighlight();
+}
+
+/* ------------------------------------------------------------ blokk szerkesztő */
+const MENU = [
+  ["step","step forward …","cmd"],["turn","turn by …","cmd"],["mine","mine here","cmd"],
+  ["print","print …","print"],["set","set … to …","cmd"],
+  ["if","if …","ctl"],["ifelse","if … else …","ctl"],["while","while …","loop"],
+];
+function newBlock(t) {
+  switch (t) {
+    case "step": return {t, a: ""};
+    case "turn": return {t, a: ""};
+    case "mine": return {t};
+    case "print": return {t, a: ""};
+    case "set": return {t, name: "", expr: null};
+    case "if": return {t, a: "", body: []};
+    case "ifelse": return {t, a: "", body: [], ebody: []};
+    case "while": return {t, a: "", body: []};
+  }
+}
+const isCtl = t => t === "if" || t === "ifelse" || t === "while";
+
+function closeMenu() { document.querySelectorAll(".menu").forEach(m => m.remove()); document.querySelectorAll(".slot.open,.vslot.open").forEach(s => s.classList.remove("open")); }
+function openMenu(slotEl, list, idx, depth) {
+  closeMenu(); slotEl.classList.add("open");
+  const m = el("div", "menu", el("h4", "", "Új blokk beszúrása"));
+  for (const [t, label, cls] of MENU) {
+    const blocked = isCtl(t) && depth >= MAX_DEPTH;
+    const b = el("button", cls + (blocked ? " dis" : ""), label);
+    if (blocked) b.title = "A vezérlő blokkok legfeljebb 3 szint mélyen ágyazhatók egymásba.";
+    b.onclick = ev => {
+      ev.stopPropagation();
+      if (blocked) { toast("Legfeljebb 3 szint mély egymásba ágyazás engedélyezett.", true); return; }
+      closeMenu(); list.splice(idx, 0, newBlock(t)); changed(true);
+    };
+    m.append(b);
+  }
+  document.body.append(m);
+  const r = slotEl.getBoundingClientRect();
+  let top = r.bottom + 4, left = r.left + 10;
+  if (top + m.offsetHeight > innerHeight - 8) top = Math.max(8, r.top - m.offsetHeight - 4);
+  if (left + m.offsetWidth > innerWidth - 8) left = innerWidth - m.offsetWidth - 8;
+  m.style.top = top + "px"; m.style.left = left + "px";
+}
+document.addEventListener("click", e => { if (!e.target.closest(".menu") && !e.target.closest(".slot")) closeMenu(); });
+
+function slot(list, idx, depth, last) {
+  const s = el("div", "slot" + (list.length === 0 ? " empty" : last ? " last" : ""));
+  s.title = "Blokk beszúrása ide";
+  s.onclick = ev => { ev.stopPropagation(); openMenu(s, list, idx, depth); };
+  return s;
+}
+function renderList(list, box, depth) {
+  list.forEach((n, i) => { box.append(slot(list, i, depth, false)); box.append(blockEl(n, list, i, depth)); });
+  box.append(slot(list, list.length, depth, true));
+}
+
+function field(obj, key, kind, ph) {
+  const inp = document.createElement("input");
+  inp.className = "fld"; inp.type = "text"; inp.spellcheck = false; inp.autocomplete = "off";
+  inp.value = obj[key]; inp.placeholder = ph;
+  const size = () => { inp.style.width = Math.max(8, inp.value.length + 4, ph.length + 2) + "ch"; };
+  size(); inp.addEventListener("input", size);
+  inp.addEventListener("keydown", e => { if (e.key === "Enter") inp.blur(); e.stopPropagation(); });
+  inp.addEventListener("change", () => {
+    const v = inp.value.trim();
+    if (v === "" || (kind === "ident" ? validIdent(v) : validSimple(v))) {
+      obj[key] = v; inp.value = v; size(); changed(false);
+    } else {
+      toast(whyInvalid(kind, v), true);
+      inp.classList.add("bad"); setTimeout(() => inp.classList.remove("bad"), 400);
+      inp.value = obj[key]; size();
+    }
+  });
+  return inp;
+}
+/* ---- érték-blokkok: a set blokk "to" utáni részébe illeszthetők, nem ágyazhatók egymásba ---- */
+const VALS = ["val", "+", "-", "*", "=", "<>", "<", "<=", ">", ">=", "and", "or", "not", "isThere"];
+function mkExpr(id) {
+  if (id === "val") return {k: "val", a: ""};
+  if (id === "not" || id === "isThere") return {k: id, a: ""};
+  return {k: "bin", op: id, a: "", b: ""};
+}
+function vbLayout(id, mk) {            // az érték-blokk alakja; mk(key) egy ⟨simpleval⟩ mezőt ad
+  const op = t => el("span", "op", t);
+  if (id === "val") return [mk("a")];
+  if (id === "not" || id === "isThere") return [op(id), mk("a")];
+  return [mk("a"), op(id), mk("b")];
+}
+function exprEditor(n) {
+  if (!n.expr) {
+    const sl = el("span", "vslot", "＋ érték-blokk");
+    sl.title = "Érték-blokk beszúrása";
+    sl.onclick = ev => { ev.stopPropagation(); openValMenu(sl, n); };
+    return sl;
+  }
+  const e = n.expr, id = e.k === "bin" ? e.op : e.k;
+  const box = el("span", "vb");
+  vbLayout(id, key => field(e, key, "simple", "simpleval")).forEach(x => box.append(x));
+  const x = el("button", "x", "✕"); x.title = "Érték-blokk eltávolítása";
+  x.onclick = () => { n.expr = null; changed(true); };
+  box.append(x);
+  return box;
+}
+function openValMenu(anchor, n) {
+  closeMenu(); anchor.classList.add("open");
+  const m = el("div", "menu", el("h4", "", "Érték-blokk beszúrása"));
+  for (const id of VALS) {
+    const b = el("button", "vitem"), vb = el("span", "vb");
+    vbLayout(id, () => el("span", "pill", "⟨simpleval⟩")).forEach(x => vb.append(x));
+    b.append(vb);
+    b.onclick = ev => { ev.stopPropagation(); closeMenu(); n.expr = mkExpr(id); changed(true); };
+    m.append(b);
+  }
+  document.body.append(m);
+  const r = anchor.getBoundingClientRect();
+  let top = r.bottom + 4, left = r.left;
+  if (top + m.offsetHeight > innerHeight - 8) top = Math.max(8, innerHeight - m.offsetHeight - 8);
+  if (left + m.offsetWidth > innerWidth - 8) left = Math.max(8, innerWidth - m.offsetWidth - 8);
+  m.style.top = top + "px"; m.style.left = left + "px";
+}
+
+function moveBlock(list, i, d) {
+  const j = i + d; if (j < 0 || j >= list.length) return;
+  [list[i], list[j]] = [list[j], list[i]]; changed(true);
+}
+function tools(list, i) {
+  const t = el("span", "tools");
+  const up = el("button", "", "↑"), dn = el("button", "", "↓"), del = el("button", "del", "✕");
+  up.title = "Feljebb"; dn.title = "Lejjebb"; del.title = "Blokk törlése (a tartalmával együtt)";
+  up.onclick = () => moveBlock(list, i, -1); dn.onclick = () => moveBlock(list, i, 1);
+  del.onclick = () => { list.splice(i, 1); changed(true); };
+  t.append(up, dn, del); return t;
+}
+function blockEl(n, list, i, depth) {
+  const kw = s => el("span", "kw", s);
+  if (n.t === "step" || n.t === "turn" || n.t === "mine" || n.t === "print" || n.t === "set") {
+    const cls = n.t === "print" ? "print" : "cmd";
+    const row = el("div", "row");
+    if (n.t === "step") row.append(kw("step forward"), field(n, "a", "simple", "simpleval"));
+    if (n.t === "turn") row.append(kw("turn by"), field(n, "a", "simple", "simpleval"));
+    if (n.t === "mine") row.append(kw("mine here"));
+    if (n.t === "print") row.append(kw("print"), field(n, "a", "simple", "simpleval"));
+    if (n.t === "set") row.append(kw("set"), field(n, "name", "ident", "változó"), kw("to"), exprEditor(n));
+    row.append(tools(list, i));
+    lineEls[n._l] = row;
+    return el("div", "blk " + cls, row);
+  }
+  const cls = n.t === "while" ? "loop" : "ctl";
+  const row = el("div", "row", kw(n.t === "ifelse" ? "if" : n.t), field(n, "a", "simple", "simpleval"), tools(list, i));
+  lineEls[n._l] = row;
+  const b = el("div", "blk " + cls, row);
+  const inner = el("div", "inner"); renderList(n.body, inner, depth + 1); b.append(inner);
+  if (n.t === "ifelse") {
+    const er = el("div", "else-row", "else"); lineEls[n._el] = er; b.append(er);
+    const inner2 = el("div", "inner"); renderList(n.ebody, inner2, depth + 1); b.append(inner2);
+  }
+  return b;
+}
+function renderBlocks() {
+  genLines(model, 0, []);       // sorszámok
+  lineEls = {};
+  const ws = $("#ws"); const sc = ws.scrollTop; ws.innerHTML = "";
+  ws.append(el("p", "hint", "A program blokkokból áll. Kattints egy „＋” sávra, és válaszd ki a beszúrandó blokkot. A set blokk „to” utáni részébe érték-blokk kerül (a sárga „＋ érték-blokk” mezőre kattintva választhatsz). A ⟨simpleval⟩ mezőkbe változónevet, számot (0–100) vagy true/false értéket írhatsz."));
+  const wrap = el("div"); renderList(model, wrap, 0); ws.append(wrap); ws.scrollTop = sc;
+}
+function changed(structural) {
+  stopTimer();
+  if (run) { run = null; setMode("idle"); }
+  if (structural) renderBlocks();
+  refreshText();
+  applyHighlight();
+}
+
+function findIncomplete(nodes) {
+  for (const n of nodes) {
+    const bad = (n.a === "" ) || (n.t === "set" && (n.name === "" || !n.expr || n.expr.a === "" || (n.expr.k === "bin" && n.expr.b === "")));
+    if (n.t !== "mine" && bad) return n;
+    if (n.body) { const r = findIncomplete(n.body); if (r) return r; }
+    if (n.ebody) { const r = findIncomplete(n.ebody); if (r) return r; }
+  }
+  return null;
+}
+function incompleteCheck() {
+  const n = findIncomplete(model);
+  if (!n) return true;
+  toast("Hiányos blokk: a piros (üres) mezőket ki kell tölteni a futtatás előtt.", true);
+  const row = lineEls[n._l]; if (row) row.scrollIntoView({block: "center", behavior: "smooth"});
+  return false;
+}
+
+/* ------------------------------------------------------------ szimulátor */
+function frontOf(s) { const [dx, dy] = DIRS[s.d]; return [s.x + dx, s.y + dy]; }
+function frontKind(s) {
+  const [fx, fy] = frontOf(s);
+  if (fy < 0 || fy >= s.grid.length || fx < 0 || fx >= s.grid[0].length) return "fal";
+  const c = s.grid[fy][fx]; return c === "#" ? "fal" : c === "@" ? "aranyrög" : "üres kamra";
+}
+function renderSim() {
+  const map = $("#map"); map.innerHTML = "";
+  const R = sim.grid.length, C = sim.grid[0].length;
+  map.style.gridTemplateColumns = `repeat(${C}, 34px)`;
+  const [fx, fy] = frontOf(sim);
+  for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) {
+    const ch = sim.grid[y][x], found = sim.disc[y][x] || (x === sim.x && y === sim.y);
+    let cls = "cell " + (!found ? "fog" : ch === "#" ? "wall" : ch === "@" ? "gold" : "empty");
+    if (x === fx && y === fy) cls += " target";
+    const c = el("div", cls);
+    if (found && ch === "@") c.textContent = "●";
+    if (found && ch === "#") c.textContent = "▓";
+    if (x === sim.x && y === sim.y) c.append(el("div", "robot", ARROWS[sim.d]));
+    map.append(c);
+  }
+  const k = frontKind(sim);
+  $("#sensor").textContent = k === "fal" ? "▓ fal" : k === "aranyrög" ? "● aranyrög" : "□ üres kamra";
+  $("#mined").textContent = sim.mined;
+}
+function renderVars() {
+  const box = $("#vars");
+  if (!varsView.length) { box.innerHTML = '<span class="hint">Még nincs változó – az első set utasítás hozza létre.</span>'; return; }
+  const t = el("table", "vars", el("tr", "", ...["Név","Típus","Érték"].map(h => el("th", "", h))));
+  for (const [n, ty, v] of varsView) t.append(el("tr", "", el("td", "", n), el("td", "", ty === "int" ? "egész" : "logikai"), el("td", "", v)));
+  box.innerHTML = ""; box.append(t);
+}
+function renderConsole() {
+  const c = $("#console"); c.innerHTML = "";
+  for (const [kind, t] of consoleLines) c.append(el("div", kind, t));
+  c.parentElement.scrollTop = c.parentElement.scrollHeight;
+}
+function applyHighlight() {
+  Object.values(lineEls).forEach(e => e.classList.remove("cur", "errline"));
+  Object.values(lineDivs).forEach(e => e.classList.remove("cur", "errline"));
+  let cur = null, errl = null;
+  if (run) { cur = run.cur; errl = run.errLine; }
+  if (errl) { lineEls[errl]?.classList.add("errline"); lineDivs[errl]?.classList.add("errline"); }
+  if (cur) {
+    lineEls[cur]?.classList.add("cur"); lineDivs[cur]?.classList.add("cur");
+    lineEls[cur]?.scrollIntoView({block: "nearest"}); lineDivs[cur]?.scrollIntoView({block: "nearest"});
+  }
+}
+function setMode(m, text, isErr) {
+  mode = m;
+  const s = $("#status"); s.className = "status" + (isErr ? " err" : "");
+  s.textContent = text || ({idle: "Készen áll", manual: "Kézi vezérlés"}[m] || m);
+  $("#bPause").disabled = !(timer);
+  $("#bStep").disabled = false;
+}
+function renderAll() { renderSim(); renderVars(); renderConsole(); applyHighlight(); }
+
+/* ------------------------------------------------------------ futtatás / nyomkövetés */
+function stopTimer() { if (timer) { clearInterval(timer); timer = null; } $("#bPause").disabled = true; }
+function interval() { return [1000, 700, 500, 350, 250, 150, 80, 40, 15, 4][$("#speed").value - 1]; }   // ms / sor
+
+let logWant = null, logBusy = false;
+function syncLog(n) {            // csak a legfrissebb állapotot írjuk ki, a közbülsőket összevonjuk
+  logWant = n; if (!logBusy) pumpLog();
+}
+async function pumpLog() {
+  logBusy = true;
+  while (logWant !== null) {
+    const n = logWant; logWant = null;
+    try { const r = await api("/api/logsync", {n}); $("#log").textContent = r.log; } catch (e) {}
+  }
+  logBusy = false;
+}
+async function startRun() {
+  if (!incompleteCheck()) return null;
+  stopTimer(); closeMenu();
+  const res = await api("/api/run", {text: textLines().join("\n")});
+  run = {entries: res.entries, p: 0, end: res.end, final: res.final, cur: null, errLine: null};
+  run.cur = res.entries.length ? res.entries[0].line : null;
+  sim = fromState(res.state0); consoleLines = []; varsView = [];
+  $("#log").textContent = "";
+  syncLog(0);
+  renderAll(); updateStatus();
+  return run;
+}
+function updateStatus() {
+  if (!run) return;
+  const n = run.entries.length;
+  if (run.p < n) setMode("trace", `Nyomkövetés: ${run.p}/${n} sor`);
+  else if (run.end === "LIMIT") setMode("done", "Leállt: INSTRUCTION_COUNT_LIMIT_EXCEEDED", true);
+  else if (run.errLine) setMode("done", "Futási hiba miatt leállt", true);
+  else setMode("done", "A futás véget ért (EOR)");
+}
+function stepOnce(fast) {
+  if (!run || run.p >= run.entries.length) { stopTimer(); updateStatus(); return false; }
+  const e = run.entries[run.p++];
+  sim = fromState(e.st); varsView = e.vars;
+  if (e.out !== null) consoleLines.push(["", e.out]);
+  if (e.err) { consoleLines.push(["e", `Hiba (${e.line}. sor): ${e.err}`]); run.errLine = e.line; }
+  const n = run.entries.length;
+  run.cur = run.p < n ? run.entries[run.p].line : null;
+  if (run.p >= n) {
+    stopTimer();
+    if (run.end === "LIMIT") consoleLines.push(["e", "INSTRUCTION_COUNT_LIMIT_EXCEEDED – a program túllépte az 1000 soros utasításszám-limitet."]);
+    else consoleLines.push(["i", e.err ? "— a futás hibával leállt (EOR) —" : "— a futás véget ért (EOR) —"]);
+    syncLog(n);
+  } else if (!fast) syncLog(run.p);
+  if (!fast) { renderAll(); updateStatus(); }
+  return run.p < n;
+}
+function autoplay() {
+  stopTimer();
+  if (!run || run.p >= run.entries.length) return;
+  if (+$("#speed").value === 10) {      // maximális sebesség: azonnali végrehajtás, csak a végállapot rajzolódik ki
+    while (run.p < run.entries.length) stepOnce(true);
+    renderAll(); updateStatus();
+    return;
+  }
+  timer = setInterval(() => { if (!stepOnce()) stopTimer(); $("#bPause").disabled = !timer; }, interval());
+  $("#bPause").disabled = false;
+  setMode("run", "Fut…");
+}
+$("#bRun").onclick = async () => { if (await startRun()) autoplay(); };
+$("#bDebug").onclick = async () => { await startRun(); };
+$("#bStep").onclick = async () => {
+  stopTimer();
+  if (!run || run.p >= run.entries.length && mode === "done") { if (!(await startRun())) return; if (run.entries.length === 0) { stepOnce(); } return; }
+  stepOnce();
+};
+$("#bCont").onclick = () => { if (run && run.p < run.entries.length) autoplay(); else toast("Nincs folytatható futás – indítsd el a nyomkövetést."); };
+$("#bPause").onclick = () => { stopTimer(); updateStatus(); };
+$("#bReset").onclick = () => resetAll();
+$("#speed").oninput = () => { if (timer) autoplay(); };
+function resetAll() {
+  stopTimer(); run = null; sim = fromState(init.state0); consoleLines = []; varsView = [];
+  setMode("idle"); renderAll();
+}
+
+/* ------------------------------------------------------------ kézi vezérlés */
+function manualStart() {
+  // a program futása megszakad, a robot a jelenlegi helyzetéből irányítható tovább; nincs naplózás
+  stopTimer();
+  if (run) { run = null; }
+  setMode("manual", "Kézi vezérlés (a program futása megszakadt)");
+}
+function mTurn() { manualStart(); sim.d = (sim.d + 1) % 4; renderAll(); }
+function mStep() {
+  manualStart();
+  const [fx, fy] = frontOf(sim);
+  if (frontKind(sim) === "fal") { toast("A robot falnak ütközött, ezért megállt."); renderAll(); return; }
+  sim.x = fx; sim.y = fy; sim.disc[fy][fx] = true; renderAll();
+}
+function mMine() {
+  manualStart();
+  if (sim.grid[sim.y][sim.x] !== "@") { toast("Ezen a mezőn nincs aranyrög."); renderAll(); return; }
+  sim.grid[sim.y][sim.x] = "."; sim.mined++; renderAll();
+}
+$("#mTurn").onclick = mTurn; $("#mStep").onclick = mStep; $("#mMine").onclick = mMine;
+document.addEventListener("keydown", e => {
+  if (e.target.closest("input,select,textarea")) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); mTurn(); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); mStep(); }
+  else if (e.key === "m" || e.key === "M") mMine();
+  else if (e.key === "Enter" && run) { e.preventDefault(); $("#bStep").click(); }
+});
+
+/* ------------------------------------------------------------ napló, kilépés */
+$("#bLog").onclick = async () => { const r = await api("/api/log"); $("#log").textContent = r.log || "(a naplófájl még üres vagy nem létezik)"; };
+$("#bExit").onclick = async () => {
+  if (!confirm("Kilépsz az alkalmazásból?")) return;
+  try { await api("/api/exit", {}); } catch (e) {}
+  document.body.innerHTML = '<div style="padding:40px;font:18px system-ui">Az alkalmazás leállt. Ezt az ablakot bezárhatod.</div>';
+};
+
+/* ------------------------------------------------------------ indulás */
+(async function main() {
+  init = await api("/api/init");
+  $("#fIn").textContent = init.input; $("#fLog").textContent = init.log; $("#logName").textContent = "– " + init.logPath;
+  model = init.ast.map(function fix(n) {
+    delete n.line; delete n.eline;
+    if (n.body) n.body = n.body.map(fix);
+    if (n.ebody) n.ebody = n.ebody.map(fix);
+    return n;
+  });
+  sim = fromState(init.state0);
+  renderBlocks(); refreshText(); renderAll(); setMode("idle");
+  const r = await api("/api/log"); $("#log").textContent = r.log;
+})();
+</script>
+</body>
+</html>

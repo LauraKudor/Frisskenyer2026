@@ -1,7 +1,4 @@
-"""MineScript: bemenet beolvasás, parser, interpreter, naplózás.
-
-Csak a Python standard könyvtárát használja.
-"""
+"""MineScript"""
 import re
 
 KEYWORDS = {
@@ -111,7 +108,7 @@ def parse_program(text):
                                   "line": line, "eline": j + 1})
                 else:
                     nodes.append({"t": "if", "a": t[1], "body": b, "line": line})
-            else:  # eltévedt else stb. - bemenet mindig helyes, átlépjük
+            else:  # eltévedt else stb - bemenet mindig helyes, átlépjük
                 i += 1
         return nodes, i
 
